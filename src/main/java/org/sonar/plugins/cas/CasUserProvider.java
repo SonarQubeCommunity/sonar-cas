@@ -19,21 +19,65 @@
  */
 package org.sonar.plugins.cas;
 
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 import org.jasig.cas.client.util.AbstractCasFilter;
 import org.jasig.cas.client.validation.Assertion;
+import org.sonar.api.config.Settings;
 import org.sonar.api.security.ExternalUsersProvider;
 import org.sonar.api.security.UserDetails;
 
 public class CasUserProvider extends ExternalUsersProvider {
 
+  public static final String PROPERTY_ATTRIBUTE_NAME = "sonar.cas.saml11.attribute.name";
+  public static final String PROPERTY_ATTRIBUTE_EMAIL = "sonar.cas.saml11.attribute.email";
+
+  private Settings settings;
+
+  public CasUserProvider(Settings settings) {
+	this.settings = settings;
+  }
+
   @Override
   public UserDetails doGetUserDetails(Context context) {
-    UserDetails user = null;
     Assertion assertion = (Assertion) context.getRequest().getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION);
-    if (assertion!=null && assertion.getPrincipal()!=null) {
-      user = new UserDetails();
-      user.setName(assertion.getPrincipal().getName());
+    if (assertion==null || assertion.getPrincipal()==null) {
+      return null;
     }
-    return user;
+    UserDetails details = new UserDetails();
+    details.setName(resolveAttributeValue(PROPERTY_ATTRIBUTE_NAME, assertion.getPrincipal().getAttributes()));
+    details.setEmail(resolveAttributeValue(PROPERTY_ATTRIBUTE_EMAIL, assertion.getPrincipal().getAttributes()));
+    if (details.getName()==null) {
+      details.setName(assertion.getPrincipal().getName());
+    }
+    return details;
+  }
+
+  private String resolveAttributeValue(String attributeProperty, Map<String, Object> attributes) {
+    if (attributeProperty==null || attributes==null) {
+      return null;
+    }
+    if (!settings.hasKey(attributeProperty)) {
+      return null;
+    }
+    String attributeName = settings.getString(attributeProperty);
+    if (StringUtils.isBlank(attributeName)) {
+      return null;
+    }
+    if (!attributes.containsKey(attributeName)) {
+      return null;
+    }
+    Object attributeValue = attributes.get(attributeName);
+    if (attributeValue==null) {
+        return null;
+    }
+    if (!(attributeValue instanceof String)) {
+      return null;
+    }
+    if (StringUtils.isBlank((String) attributeValue)) {
+      return null;
+    }
+    return (String) attributeValue;
   }
 }

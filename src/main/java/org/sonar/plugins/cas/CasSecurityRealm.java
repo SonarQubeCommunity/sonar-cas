@@ -19,6 +19,7 @@
  */
 package org.sonar.plugins.cas;
 
+import org.sonar.api.config.Settings;
 import org.sonar.api.security.Authenticator;
 import org.sonar.api.security.ExternalUsersProvider;
 import org.sonar.api.security.SecurityRealm;
@@ -27,6 +28,12 @@ public class CasSecurityRealm extends SecurityRealm {
 
   public static final String KEY = "cas";
 
+  private Settings settings;
+
+  public CasSecurityRealm(Settings settings) {
+    this.settings = settings;
+  }
+
   @Override
   public Authenticator doGetAuthenticator() {
     return new CasAuthenticator();
@@ -34,7 +41,7 @@ public class CasSecurityRealm extends SecurityRealm {
 
   @Override
   public ExternalUsersProvider getUsersProvider() {
-    return new CasUserProvider();
+    return new CasUserProvider(settings);
   }
 
   @Override
