@@ -5,7 +5,12 @@ class CasController < ApplicationController
     # POST requests are not allowed when redirecting to application.
     # For this reason it's not possible to use /sessions/login
     begin
-      self.current_user = User.authenticate(nil, nil, servlet_request)
+      login = nil
+      assertion = servlet_request.getAttribute(org.jasig.cas.client.util.AbstractCasFilter::CONST_CAS_ASSERTION)
+      unless assertion.nil? && assertion.getPrincipal().nil?
+        login = assertion.getPrincipal().getName()
+      end
+      self.current_user = User.authenticate(login, nil, servlet_request)
 
     rescue Exception => e
       self.current_user = nil
