@@ -7,7 +7,7 @@ class CasController < ApplicationController
     begin
       login = nil
       assertion = servlet_request.getAttribute(org.jasig.cas.client.util.AbstractCasFilter::CONST_CAS_ASSERTION)
-      unless assertion.nil? && assertion.getPrincipal().nil?
+      unless assertion.nil? || assertion.getPrincipal().nil?
         login = assertion.getPrincipal().getName()
       end
       self.current_user = User.authenticate(login, nil, servlet_request)
