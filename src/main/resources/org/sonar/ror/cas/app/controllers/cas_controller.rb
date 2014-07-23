@@ -6,8 +6,6 @@ class CasController < ApplicationController
     # For this reason it's not possible to use /sessions/login
     begin
       self.current_user = User.authenticate(nil, nil, servlet_request)
-      reset_session
-      session[:user_id]=current_user.id
 
     rescue Exception => e
       self.current_user = nil
