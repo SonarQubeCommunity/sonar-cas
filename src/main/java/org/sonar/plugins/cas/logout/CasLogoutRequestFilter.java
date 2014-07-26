@@ -19,7 +19,6 @@
  */
 package org.sonar.plugins.cas.logout;
 
-import org.jasig.cas.client.session.SingleSignOutFilter;
 import org.sonar.api.config.Settings;
 import org.sonar.plugins.cas.util.AbstractCasFilter;
 

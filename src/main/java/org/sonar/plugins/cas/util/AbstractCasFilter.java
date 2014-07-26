@@ -35,8 +35,7 @@ import javax.servlet.ServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-public abstract class AbstractCasFilter extends ServletFilter {
-  private static final String PROPERTY_SONAR_SERVER_URL = "sonar.cas.sonarServerUrl";
+public abstract class AbstractCasFilter extends ServletFilter implements CasPluginConstants {
   private Filter casFilter;
   private Settings settings;
 

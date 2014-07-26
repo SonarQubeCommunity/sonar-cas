@@ -30,7 +30,7 @@ public class CasSecurityRealmTest {
     CasSecurityRealm realm = new CasSecurityRealm(new Settings());
     assertThat(realm.doGetAuthenticator()).isInstanceOf(CasAuthenticator.class);
     assertThat(realm.getUsersProvider()).isInstanceOf(CasUserProvider.class);
-    assertThat(realm.getName()).isEqualTo("cas");
+    assertThat(realm.getName()).isEqualTo(CasSecurityRealm.KEY);
   }
 
 }

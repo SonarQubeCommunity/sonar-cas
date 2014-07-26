@@ -29,6 +29,7 @@ import org.junit.Test;
 import org.sonar.api.config.Settings;
 import org.sonar.api.security.ExternalUsersProvider;
 import org.sonar.api.security.UserDetails;
+import org.sonar.plugins.cas.util.CasPluginConstants;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,7 +37,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class CasUserProviderTest {
+public class CasUserProviderTest implements CasPluginConstants {
   @Test
   public void should_get_username_from_cas_attribute() {
     CasUserProvider provider = new CasUserProvider(new Settings());
@@ -66,8 +67,8 @@ public class CasUserProviderTest {
   @Test
   public void should_provide_user_details_from_saml11_attributes() {
     Settings settings = new Settings()
-      .setProperty(CasUserProvider.PROPERTY_ATTRIBUTE_NAME, "name")
-      .setProperty(CasUserProvider.PROPERTY_ATTRIBUTE_EMAIL, "email");
+      .setProperty(PROPERTY_SAML11_ATTRIBUTE_NAME, "name")
+      .setProperty(PROPERTY_SAML11_ATTRIBUTE_EMAIL, "email");
 
     CasUserProvider provider = new CasUserProvider(settings);
     HttpServletRequest request = mock(HttpServletRequest.class);

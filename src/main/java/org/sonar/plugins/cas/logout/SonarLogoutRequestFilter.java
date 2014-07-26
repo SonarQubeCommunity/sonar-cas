@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.sonar.api.config.Settings;
 import org.sonar.api.web.ServletFilter;
+import org.sonar.plugins.cas.util.CasPluginConstants;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -39,9 +40,8 @@ import com.google.common.base.Strings;
  *
  * @author Guillaume Lamirand
  */
-public class SonarLogoutRequestFilter extends ServletFilter {
+public class SonarLogoutRequestFilter extends ServletFilter implements CasPluginConstants {
 
-  public static final String PROPERTY_CAS_LOGOUT_URL = "sonar.cas.casServerLogoutUrl";
   private final Settings settings;
   private String logoutUrl;
 

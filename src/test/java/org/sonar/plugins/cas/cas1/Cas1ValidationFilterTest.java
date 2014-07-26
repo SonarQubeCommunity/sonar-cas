@@ -26,6 +26,7 @@ import org.jasig.cas.client.validation.Cas10TicketValidationFilter;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.sonar.api.config.Settings;
+import org.sonar.plugins.cas.util.CasPluginConstants;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterConfig;
@@ -36,7 +37,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.withSettings;
 
-public class Cas1ValidationFilterTest {
+public class Cas1ValidationFilterTest implements CasPluginConstants {
   @Test
   public void should_declare_pattern() {
     Cas1ValidationFilter filter = new Cas1ValidationFilter(new Settings());
@@ -47,9 +48,9 @@ public class Cas1ValidationFilterTest {
   @Test
   public void should_create_cas_filter() throws Exception {
     Settings settings = new Settings();
-    settings.setProperty("sonar.cas.sonarServerUrl", "http://localhost:9000");
-    settings.setProperty("sonar.cas.casServerLoginUrl", "http://localhost:8080/cas/login");
-    settings.setProperty("sonar.cas.casServerUrlPrefix", "http://localhost:8080/cas");
+    settings.setProperty(PROPERTY_SONAR_SERVER_URL, "http://localhost:9000");
+    settings.setProperty(PROPERTY_CAS_LOGIN_URL, "http://localhost:8080/cas/login");
+    settings.setProperty(PROPERTY_CAS_URL_PREFIX, "http://localhost:8080/cas");
 
     Cas1ValidationFilter filter = new Cas1ValidationFilter(settings);
     filter.init(mock(FilterConfig.class, withSettings().defaultAnswer(Mockito.RETURNS_DEEP_STUBS)));
@@ -60,9 +61,9 @@ public class Cas1ValidationFilterTest {
   @Test
   public void should_init_cas_filter_with_settings() throws Exception {
     Settings settings = new Settings();
-    settings.setProperty("sonar.cas.sonarServerUrl", "http://localhost:9000");
-    settings.setProperty("sonar.cas.casServerUrlPrefix", "http://localhost:8080/cas");
-    settings.setProperty("sonar.cas.sendGateway", "true");
+    settings.setProperty(PROPERTY_SONAR_SERVER_URL, "http://localhost:9000");
+    settings.setProperty(PROPERTY_CAS_URL_PREFIX, "http://localhost:8080/cas");
+    settings.setProperty(PROPERTY_SEND_GATEWAY, "true");
 
     Filter casFilter = mock(Filter.class);
     Cas1ValidationFilter filter = new Cas1ValidationFilter(settings, casFilter);

@@ -55,8 +55,8 @@ public final class Cas1AuthenticationFilter extends AbstractCasFilter {
 
   @Override
   protected void doCompleteProperties(Settings settings, Map<String, String> properties) {
-    properties.put("casServerLoginUrl", settings.getString("sonar.cas.casServerLoginUrl"));
-    properties.put("gateway", StringUtils.defaultIfBlank(settings.getString("sonar.cas.sendGateway"), "false"));
+    properties.put("casServerLoginUrl", settings.getString(PROPERTY_CAS_LOGIN_URL));
+    properties.put("gateway", StringUtils.defaultIfBlank(settings.getString(PROPERTY_SEND_GATEWAY), "false"));
   }
 
 }

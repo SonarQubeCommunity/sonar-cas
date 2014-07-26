@@ -27,11 +27,9 @@ import org.jasig.cas.client.validation.Assertion;
 import org.sonar.api.config.Settings;
 import org.sonar.api.security.ExternalUsersProvider;
 import org.sonar.api.security.UserDetails;
+import org.sonar.plugins.cas.util.CasPluginConstants;
 
-public class CasUserProvider extends ExternalUsersProvider {
-
-  public static final String PROPERTY_ATTRIBUTE_NAME = "sonar.cas.saml11.attribute.name";
-  public static final String PROPERTY_ATTRIBUTE_EMAIL = "sonar.cas.saml11.attribute.email";
+public class CasUserProvider extends ExternalUsersProvider implements CasPluginConstants {
 
   private Settings settings;
 
@@ -46,8 +44,8 @@ public class CasUserProvider extends ExternalUsersProvider {
       return null;
     }
     UserDetails details = new UserDetails();
-    details.setName(resolveAttributeValue(PROPERTY_ATTRIBUTE_NAME, assertion.getPrincipal().getAttributes()));
-    details.setEmail(resolveAttributeValue(PROPERTY_ATTRIBUTE_EMAIL, assertion.getPrincipal().getAttributes()));
+    details.setName(resolveAttributeValue(PROPERTY_SAML11_ATTRIBUTE_NAME, assertion.getPrincipal().getAttributes()));
+    details.setEmail(resolveAttributeValue(PROPERTY_SAML11_ATTRIBUTE_EMAIL, assertion.getPrincipal().getAttributes()));
     if (details.getName()==null) {
       details.setName(assertion.getPrincipal().getName());
     }
