@@ -20,13 +20,14 @@
 package org.sonar.plugins.cas;
 
 import org.junit.Test;
+import org.sonar.api.config.Settings;
 
 import static org.fest.assertions.Assertions.assertThat;
 
 public class CasSecurityRealmTest {
   @Test
   public void should_declare_components() {
-    CasSecurityRealm realm = new CasSecurityRealm();
+    CasSecurityRealm realm = new CasSecurityRealm(new Settings());
     assertThat(realm.doGetAuthenticator()).isInstanceOf(CasAuthenticator.class);
     assertThat(realm.getUsersProvider()).isInstanceOf(CasUserProvider.class);
     assertThat(realm.getName()).isEqualTo("cas");

@@ -42,3 +42,8 @@ sonar.cas.sonarServerUrl=http://localhost:9000
 # Note that 10 seconds should be more than enough for most environments that have NTP time synchronization.
 # Default is 1000 milliseconds.
 #sonar.cas.saml11.toleranceMilliseconds=1000
+
+# SAML 1.1 tickets may contain attributes describing information about the authenticated user.
+# The attributes can be used to automatically populate the name and e-mail fields of Sonar users if provided.
+#sonar.cas.saml11.attribute.name=name
+#sonar.cas.saml11.attribute.email=email
