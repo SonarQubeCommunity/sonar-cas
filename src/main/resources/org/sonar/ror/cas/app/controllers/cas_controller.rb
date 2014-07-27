@@ -1,5 +1,7 @@
 class CasController < ApplicationController
 
+  skip_before_filter :check_authentication
+
   def validate
     # This controller is required because of a CAS limitation :
     # POST requests are not allowed when redirecting to application.
