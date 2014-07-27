@@ -13,6 +13,7 @@
   <packaging>sonar-plugin</packaging>
 
   <name>Sonar CAS Plugin</name>
+  <description>Enable user authentication and Single Sign-On via a Central Authentication Service (JA-SIG CAS)</description>
   <inceptionYear>2012</inceptionYear>
   <organization>
     <name>SonarSource</name>
@@ -50,6 +51,8 @@
 
   <properties>
     <sonar.version>3.7</sonar.version>
+    <sonar.pluginName>CAS</sonar.pluginName>
+    <sonar.pluginClass>org.sonar.plugins.cas.CasPlugin</sonar.pluginClass>
     <cas.version>3.2.1</cas.version>
   </properties>
 
@@ -75,6 +78,11 @@
       <groupId>org.opensaml</groupId>
       <artifactId>opensaml1</artifactId>
       <version>1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>xml-security</groupId>
+      <artifactId>xmlsec</artifactId>
+      <version>1.3.0</version>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -108,20 +116,5 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.sonar</groupId>
-        <artifactId>sonar-packaging-maven-plugin</artifactId>
-        <configuration>
-          <pluginKey>cas</pluginKey>
-          <pluginName>CAS</pluginName>
-          <pluginDescription>This plugin enables user authentication and Single Sign-On via your Central Authentication Service (JA-SIG CAS)</pluginDescription>
-          <pluginClass>org.sonar.plugins.cas.CasPlugin</pluginClass>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
 </project>
