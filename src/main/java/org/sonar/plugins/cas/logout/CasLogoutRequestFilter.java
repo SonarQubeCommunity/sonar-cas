@@ -37,7 +37,7 @@ public class CasLogoutRequestFilter extends AbstractCasFilter {
 
   @Override
   public UrlPattern doGetPattern() {
-    return UrlPattern.create("/*");
+    return UrlPattern.create("/cas/validate");
   }
 
   @Override
