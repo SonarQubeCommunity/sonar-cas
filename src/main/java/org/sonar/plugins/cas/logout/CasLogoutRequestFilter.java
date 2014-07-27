@@ -42,7 +42,9 @@ public class CasLogoutRequestFilter extends AbstractCasFilter {
 
   @Override
   protected void doCompleteProperties(final Settings settings, final Map<String, String> properties) {
-    // Nothing to complete
+    if (PROTOCOL_SAML11.equals(settings.getString(PROPERTY_PROTOCOL))) {
+      properties.put("artifactParameterName", "SAMLart");
+    }
   }
 
 }
