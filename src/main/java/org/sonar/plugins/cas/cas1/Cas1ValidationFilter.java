@@ -58,7 +58,7 @@ public final class Cas1ValidationFilter extends AbstractCasFilter {
     properties.put("casServerUrlPrefix", settings.getString(PROPERTY_CAS_URL_PREFIX));
     properties.put("gateway", StringUtils.defaultIfBlank(settings.getString(PROPERTY_SEND_GATEWAY), "false"));
     properties.put("redirectAfterValidation", "false");
-    properties.put("useSession", "true");
+    properties.put("useSession", "false");
     properties.put("exceptionOnValidationFailure", "true");
   }
 

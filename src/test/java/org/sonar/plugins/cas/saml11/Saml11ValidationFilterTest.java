@@ -74,7 +74,7 @@ public class Saml11ValidationFilterTest implements CasPluginConstants {
         return verifyParam(config, "gateway", "false") &&
           verifyParam(config, "service", "http://localhost:9000/cas/validate") &&
           verifyParam(config, "redirectAfterValidation", "false") &&
-          verifyParam(config, "useSession", "true") &&
+          verifyParam(config, "useSession", "false") &&
           verifyParam(config, "tolerance", "1000") &&
           verifyParam(config, "exceptionOnValidationFailure", "true");
       }

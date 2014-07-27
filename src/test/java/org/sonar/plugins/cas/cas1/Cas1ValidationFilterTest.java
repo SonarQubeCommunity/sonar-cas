@@ -77,7 +77,7 @@ public class Cas1ValidationFilterTest implements CasPluginConstants {
           verifyParam(config, "service", "http://localhost:9000/cas/validate") &&
           verifyParam(config, "casServerUrlPrefix", "http://localhost:8080/cas") &&
           verifyParam(config, "redirectAfterValidation", "false") &&
-          verifyParam(config, "useSession", "true") &&
+          verifyParam(config, "useSession", "false") &&
           verifyParam(config, "exceptionOnValidationFailure", "true");
       }
 
