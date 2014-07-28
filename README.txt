@@ -35,6 +35,9 @@ sonar.cas.sonarServerUrl=http://localhost:9000
 # Optional CAS server logout URL. If set, sonar session will be deleted on CAS logout request.
 #sonar.cas.casServerLogoutUrl=http://localhost:8080/cas/logout
 
+# Specifies whether CAS should redirect to Sonar after logging out. Default is true.
+#sonar.cas.logoutRedirect=true
+
 # Specifies whether gateway=true should be sent to the CAS server. Default is false.
 #sonar.cas.sendGateway=false
 
@@ -47,3 +50,5 @@ sonar.cas.sonarServerUrl=http://localhost:9000
 # The attributes can be used to automatically populate the name and e-mail fields of Sonar users if provided.
 #sonar.cas.saml11.attribute.name=name
 #sonar.cas.saml11.attribute.email=email
+# Multiple comma-separated attributes may be used to associate Sonar users with groups (which must already exist).
+#sonar.cas.saml11.attribute.groups=groups,roles
