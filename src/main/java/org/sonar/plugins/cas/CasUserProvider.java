@@ -21,61 +21,41 @@ package org.sonar.plugins.cas;
 
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import org.jasig.cas.client.authentication.AttributePrincipal;
 import org.jasig.cas.client.util.AbstractCasFilter;
 import org.jasig.cas.client.validation.Assertion;
 import org.sonar.api.config.Settings;
 import org.sonar.api.security.ExternalUsersProvider;
 import org.sonar.api.security.UserDetails;
 import org.sonar.plugins.cas.util.CasPluginConstants;
+import org.sonar.plugins.cas.util.CasUtils;
 
 public class CasUserProvider extends ExternalUsersProvider implements CasPluginConstants {
 
   private Settings settings;
+  private Map<String, AttributePrincipal> principalMap;
 
-  public CasUserProvider(Settings settings) {
-	this.settings = settings;
+  public CasUserProvider(Settings settings, Map<String, AttributePrincipal> principalMap) {
+    this.settings = settings;
+    this.principalMap = principalMap;
   }
 
   @Override
   public UserDetails doGetUserDetails(Context context) {
     Assertion assertion = (Assertion) context.getRequest().getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION);
-    if (assertion==null || assertion.getPrincipal()==null) {
+    if (assertion == null || assertion.getPrincipal() == null) {
       return null;
     }
+    
     UserDetails details = new UserDetails();
-    details.setName(resolveAttributeValue(PROPERTY_SAML11_ATTRIBUTE_NAME, assertion.getPrincipal().getAttributes()));
-    details.setEmail(resolveAttributeValue(PROPERTY_SAML11_ATTRIBUTE_EMAIL, assertion.getPrincipal().getAttributes()));
-    if (details.getName()==null) {
+    details.setName(CasUtils.resolveAttributeValue(settings, PROPERTY_SAML11_ATTRIBUTE_NAME, assertion.getPrincipal().getAttributes()));
+    details.setEmail(CasUtils.resolveAttributeValue(settings, PROPERTY_SAML11_ATTRIBUTE_EMAIL, assertion.getPrincipal().getAttributes()));
+    if (details.getName() == null) {
       details.setName(assertion.getPrincipal().getName());
     }
+    
+    principalMap.put(assertion.getPrincipal().getName(), assertion.getPrincipal());
     return details;
   }
 
-  private String resolveAttributeValue(String attributeProperty, Map<String, Object> attributes) {
-    if (attributeProperty==null || attributes==null) {
-      return null;
-    }
-    if (!settings.hasKey(attributeProperty)) {
-      return null;
-    }
-    String attributeName = settings.getString(attributeProperty);
-    if (StringUtils.isBlank(attributeName)) {
-      return null;
-    }
-    if (!attributes.containsKey(attributeName)) {
-      return null;
-    }
-    Object attributeValue = attributes.get(attributeName);
-    if (attributeValue==null) {
-        return null;
-    }
-    if (!(attributeValue instanceof String)) {
-      return null;
-    }
-    if (StringUtils.isBlank((String) attributeValue)) {
-      return null;
-    }
-    return (String) attributeValue;
-  }
 }

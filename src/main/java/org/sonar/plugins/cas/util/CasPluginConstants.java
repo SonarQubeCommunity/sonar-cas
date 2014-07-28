@@ -35,6 +35,7 @@ public interface CasPluginConstants {
   static final String PROPERTY_SAML11_TOLERANCE = "sonar.cas.saml11.toleranceMilliseconds";
   static final String PROPERTY_SAML11_ATTRIBUTE_NAME = "sonar.cas.saml11.attribute.name";
   static final String PROPERTY_SAML11_ATTRIBUTE_EMAIL = "sonar.cas.saml11.attribute.email";
+  static final String PROPERTY_SAML11_ATTRIBUTE_GROUPS = "sonar.cas.saml11.attribute.groups";
   
   static final String PROTOCOL_CAS1 = "cas1";
   static final String PROTOCOL_CAS2 = "cas2";

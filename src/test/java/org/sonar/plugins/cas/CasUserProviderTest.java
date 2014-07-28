@@ -19,9 +19,16 @@
  */
 package org.sonar.plugins.cas;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.jasig.cas.client.authentication.AttributePrincipal;
 import org.jasig.cas.client.authentication.AttributePrincipalImpl;
 import org.jasig.cas.client.util.AbstractCasFilter;
 import org.jasig.cas.client.validation.Assertion;
@@ -31,16 +38,10 @@ import org.sonar.api.security.ExternalUsersProvider;
 import org.sonar.api.security.UserDetails;
 import org.sonar.plugins.cas.util.CasPluginConstants;
 
-import javax.servlet.http.HttpServletRequest;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 public class CasUserProviderTest implements CasPluginConstants {
   @Test
   public void should_get_username_from_cas_attribute() {
-    CasUserProvider provider = new CasUserProvider(new Settings());
+    CasUserProvider provider = new CasUserProvider(new Settings(), new HashMap<String, AttributePrincipal>());
     HttpServletRequest request = mock(HttpServletRequest.class);
     Assertion casAssertion = mock(Assertion.class);
     when(casAssertion.getPrincipal()).thenReturn(new AttributePrincipalImpl("goldorak"));
@@ -54,7 +55,7 @@ public class CasUserProviderTest implements CasPluginConstants {
 
   @Test
   public void should_not_return_user_id_missing_cas_attribute() {
-    CasUserProvider provider = new CasUserProvider(new Settings());
+    CasUserProvider provider = new CasUserProvider(new Settings(), new HashMap<String, AttributePrincipal>());
     HttpServletRequest request = mock(HttpServletRequest.class);
     when(request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION)).thenReturn(null);
 
@@ -70,7 +71,7 @@ public class CasUserProviderTest implements CasPluginConstants {
       .setProperty(PROPERTY_SAML11_ATTRIBUTE_NAME, "name")
       .setProperty(PROPERTY_SAML11_ATTRIBUTE_EMAIL, "email");
 
-    CasUserProvider provider = new CasUserProvider(settings);
+    CasUserProvider provider = new CasUserProvider(settings, new HashMap<String, AttributePrincipal>());
     HttpServletRequest request = mock(HttpServletRequest.class);
     Assertion casAssertion = mock(Assertion.class);
     Map<String, Object> attributes = new HashMap<String, Object>();
