@@ -19,23 +19,23 @@
  */
 package org.sonar.plugins.cas;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.jasig.cas.client.authentication.AttributePrincipal;
 import org.sonar.api.config.Settings;
 import org.sonar.api.security.ExternalGroupsProvider;
 import org.sonar.plugins.cas.util.CasPluginConstants;
 import org.sonar.plugins.cas.util.CasUtils;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 public class CasGroupProvider extends ExternalGroupsProvider implements CasPluginConstants {
-  
+
   private Settings settings;
   private Map<String, AttributePrincipal> principalMap;
-  
+
   public CasGroupProvider(Settings settings, Map<String, AttributePrincipal> principalMap) {
     this.settings = settings;
     this.principalMap = principalMap;
@@ -47,7 +47,7 @@ public class CasGroupProvider extends ExternalGroupsProvider implements CasPlugi
     if (principal == null || principal.getAttributes() == null) {
       return null;
     }
-    
+
     Set<String> groups = new HashSet<String>();
     String[] groupAttributes = settings.getStringArray(PROPERTY_SAML11_ATTRIBUTE_GROUPS);
     for (String groupAttribute : groupAttributes) {
@@ -56,7 +56,7 @@ public class CasGroupProvider extends ExternalGroupsProvider implements CasPlugi
         groups.addAll(values);
       }
     }
-    
+
     principalMap.remove(username);
     if (groups.isEmpty()) {
       return null;

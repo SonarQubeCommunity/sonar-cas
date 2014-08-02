@@ -19,8 +19,6 @@
  */
 package org.sonar.plugins.cas;
 
-import java.util.Map;
-
 import org.jasig.cas.client.authentication.AttributePrincipal;
 import org.jasig.cas.client.util.AbstractCasFilter;
 import org.jasig.cas.client.validation.Assertion;
@@ -29,6 +27,8 @@ import org.sonar.api.security.ExternalUsersProvider;
 import org.sonar.api.security.UserDetails;
 import org.sonar.plugins.cas.util.CasPluginConstants;
 import org.sonar.plugins.cas.util.CasUtils;
+
+import java.util.Map;
 
 public class CasUserProvider extends ExternalUsersProvider implements CasPluginConstants {
 
@@ -46,14 +46,14 @@ public class CasUserProvider extends ExternalUsersProvider implements CasPluginC
     if (assertion == null || assertion.getPrincipal() == null) {
       return null;
     }
-    
+
     UserDetails details = new UserDetails();
     details.setName(CasUtils.resolveAttributeValue(settings, PROPERTY_SAML11_ATTRIBUTE_NAME, assertion.getPrincipal().getAttributes()));
     details.setEmail(CasUtils.resolveAttributeValue(settings, PROPERTY_SAML11_ATTRIBUTE_EMAIL, assertion.getPrincipal().getAttributes()));
     if (details.getName() == null) {
       details.setName(assertion.getPrincipal().getName());
     }
-    
+
     principalMap.put(assertion.getPrincipal().getName(), assertion.getPrincipal());
     return details;
   }

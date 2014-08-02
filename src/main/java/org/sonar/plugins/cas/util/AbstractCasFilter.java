@@ -44,6 +44,7 @@ public abstract class AbstractCasFilter extends ServletFilter implements CasPlug
     this.casFilter = casFilter;
   }
 
+  @Override
   public abstract UrlPattern doGetPattern();
 
   public final void init(FilterConfig initialConfig) throws ServletException {

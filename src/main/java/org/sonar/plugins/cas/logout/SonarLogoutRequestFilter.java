@@ -19,9 +19,12 @@
  */
 package org.sonar.plugins.cas.logout;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+import org.apache.commons.lang.StringUtils;
+import org.sonar.api.config.Settings;
+import org.sonar.api.web.ServletFilter;
+import org.sonar.plugins.cas.util.CasPluginConstants;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -30,13 +33,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
-import org.sonar.api.config.Settings;
-import org.sonar.api.web.ServletFilter;
-import org.sonar.plugins.cas.util.CasPluginConstants;
-
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 /**
  * This filter will handle logout request coming from sonar UI, in order to redirect to CAS logout page.

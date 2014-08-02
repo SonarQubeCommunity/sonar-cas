@@ -19,18 +19,18 @@
  */
 package org.sonar.plugins.cas;
 
-import static org.fest.assertions.Assertions.assertThat;
+import org.jasig.cas.client.authentication.AttributePrincipal;
+import org.jasig.cas.client.authentication.AttributePrincipalImpl;
+import org.junit.Test;
+import org.sonar.api.config.Settings;
+import org.sonar.plugins.cas.util.CasPluginConstants;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jasig.cas.client.authentication.AttributePrincipal;
-import org.jasig.cas.client.authentication.AttributePrincipalImpl;
-import org.junit.Test;
-import org.sonar.api.config.Settings;
-import org.sonar.plugins.cas.util.CasPluginConstants;
+import static org.fest.assertions.Assertions.assertThat;
 
 public class CasGroupProviderTest implements CasPluginConstants {
 
@@ -40,12 +40,12 @@ public class CasGroupProviderTest implements CasPluginConstants {
       .setProperty(PROPERTY_SAML11_ATTRIBUTE_GROUPS, "groups,roles");
 
     Map<String, Object> attributes = new HashMap<String, Object>();
-    attributes.put("groups", Arrays.asList(new String[] { "group1", "group2" }));
-    attributes.put("roles", Arrays.asList(new String[] { "role1", "role2" }));
-    
+    attributes.put("groups", Arrays.asList(new String[] {"group1", "group2"}));
+    attributes.put("roles", Arrays.asList(new String[] {"role1", "role2"}));
+
     Map<String, AttributePrincipal> principalMap = new HashMap<String, AttributePrincipal>();
     principalMap.put("goldorak", new AttributePrincipalImpl("goldorak", attributes));
-    
+
     CasGroupProvider provider = new CasGroupProvider(settings, principalMap);
     Collection<String> groups = provider.doGetGroups("goldorak");
 

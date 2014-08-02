@@ -23,7 +23,7 @@ public interface CasPluginConstants {
 
   static final String PROPERTY_CREATE_USERS = "sonar.authenticator.createUsers";
   static final String PROPERTY_SECURITY_REALM = "sonar.security.realm";
-  
+
   static final String PROPERTY_PROTOCOL = "sonar.cas.protocol";
   static final String PROPERTY_SONAR_SERVER_URL = "sonar.cas.sonarServerUrl";
   static final String PROPERTY_CAS_URL_PREFIX = "sonar.cas.casServerUrlPrefix";
@@ -31,12 +31,12 @@ public interface CasPluginConstants {
   static final String PROPERTY_CAS_LOGOUT_URL = "sonar.cas.casServerLogoutUrl";
   static final String PROPERTY_LOGOUT_REDIRECT = "sonar.cas.logoutRedirect";
   static final String PROPERTY_SEND_GATEWAY = "sonar.cas.sendGateway";
-  
+
   static final String PROPERTY_SAML11_TOLERANCE = "sonar.cas.saml11.toleranceMilliseconds";
   static final String PROPERTY_SAML11_ATTRIBUTE_NAME = "sonar.cas.saml11.attribute.name";
   static final String PROPERTY_SAML11_ATTRIBUTE_EMAIL = "sonar.cas.saml11.attribute.email";
   static final String PROPERTY_SAML11_ATTRIBUTE_GROUPS = "sonar.cas.saml11.attribute.groups";
-  
+
   static final String PROTOCOL_CAS1 = "cas1";
   static final String PROTOCOL_CAS2 = "cas2";
   static final String PROTOCOL_SAML11 = "saml11";

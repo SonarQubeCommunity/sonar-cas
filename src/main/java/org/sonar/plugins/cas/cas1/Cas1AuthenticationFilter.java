@@ -19,8 +19,6 @@
  */
 package org.sonar.plugins.cas.cas1;
 
-import java.util.Map;
-
 import com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.lang.StringUtils;
 import org.jasig.cas.client.authentication.AuthenticationFilter;
@@ -28,6 +26,8 @@ import org.sonar.api.config.Settings;
 import org.sonar.plugins.cas.util.AbstractCasFilter;
 
 import javax.servlet.Filter;
+
+import java.util.Map;
 
 /**
  * This filter is used to manage CAS 1 protocol.

@@ -19,15 +19,15 @@
  */
 package org.sonar.plugins.cas;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.jasig.cas.client.authentication.AttributePrincipal;
 import org.sonar.api.config.Settings;
 import org.sonar.api.security.Authenticator;
 import org.sonar.api.security.ExternalGroupsProvider;
 import org.sonar.api.security.ExternalUsersProvider;
 import org.sonar.api.security.SecurityRealm;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CasSecurityRealm extends SecurityRealm {
 
@@ -53,7 +53,7 @@ public class CasSecurityRealm extends SecurityRealm {
   public ExternalUsersProvider getUsersProvider() {
     return usersProvider;
   }
-  
+
   @Override
   public ExternalGroupsProvider getGroupsProvider() {
     return groupsProvider;
