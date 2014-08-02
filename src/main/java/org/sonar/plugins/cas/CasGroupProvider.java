@@ -43,7 +43,7 @@ public class CasGroupProvider extends ExternalGroupsProvider implements CasPlugi
 
   @Override
   public Collection<String> doGetGroups(String username) {
-    AttributePrincipal principal = principalMap.get(username);
+    AttributePrincipal principal = principalMap.remove(username);
     if (principal == null || principal.getAttributes() == null) {
       return null;
     }
@@ -57,7 +57,6 @@ public class CasGroupProvider extends ExternalGroupsProvider implements CasPlugi
       }
     }
 
-    principalMap.remove(username);
     if (groups.isEmpty()) {
       return null;
     }
