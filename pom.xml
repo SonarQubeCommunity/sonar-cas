@@ -33,7 +33,30 @@
       <name>Simon Brandhof</name>
       <timezone>+1</timezone>
     </developer>
+    <developer>
+      <id>xuhuisheng</id>
+      <name>Xu Huisheng</name>
+      <email>xyz20003@gmail.com</email>
+      <url>https://github.com/xuhuisheng</url>
+    </developer>
   </developers>
+  <contributors>
+    <contributor>
+      <name>Jerzy Krolak</name>
+      <email>jerzy.krolak@allegro.pl</email>
+      <url>https://github.com/jerzykrlk</url>
+    </contributor>
+    <contributor>
+      <name>Tuomas Jormola</name>
+      <email>tj@solitudo.net</email>
+      <url>https://github.com/tjormola</url>
+    </contributor>
+    <contributor>
+      <name>Fabien Crespel</name>
+      <email>fabien@crespel.net</email>
+      <url>https://github.com/fcrespel</url>
+    </contributor>
+  </contributors>
 
   <scm>
     <connection>scm:git:https://github.com/SonarCommunity/sonar-cas</connection>
