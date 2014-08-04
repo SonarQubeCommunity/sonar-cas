@@ -37,6 +37,7 @@ import org.sonar.plugins.cas.logout.CasLogoutRequestFilter;
 import org.sonar.plugins.cas.logout.SonarLogoutRequestFilter;
 import org.sonar.plugins.cas.saml11.Saml11AuthenticationFilter;
 import org.sonar.plugins.cas.saml11.Saml11ValidationFilter;
+import org.sonar.plugins.cas.util.CasPluginConstants;
 
 import java.util.List;
 
@@ -46,7 +47,7 @@ public final class CasPlugin extends SonarPlugin {
     return ImmutableList.of(CasExtensions.class);
   }
 
-  public static final class CasExtensions extends ExtensionProvider implements ServerExtension {
+  public static final class CasExtensions extends ExtensionProvider implements ServerExtension, CasPluginConstants {
     private Settings settings;
 
     public CasExtensions(Settings settings) {
@@ -57,24 +58,24 @@ public final class CasPlugin extends SonarPlugin {
     public Object provide() {
       List<Class> extensions = Lists.newArrayList();
       if (isRealmEnabled()) {
-        Preconditions.checkState(settings.getBoolean("sonar.authenticator.createUsers"), "Property sonar.authenticator.createUsers must be set to true.");
-        String protocol = settings.getString("sonar.cas.protocol");
+        Preconditions.checkState(settings.getBoolean(PROPERTY_CREATE_USERS), "Property sonar.authenticator.createUsers must be set to true.");
+        String protocol = settings.getString(PROPERTY_PROTOCOL);
         Preconditions.checkState(!Strings.isNullOrEmpty(protocol), "Missing CAS protocol. Values are: cas1, cas2 or saml11.");
 
         extensions.add(CasSecurityRealm.class);
 
-        if (StringUtils.isNotBlank(settings.getString(SonarLogoutRequestFilter.PROPERTY_CAS_LOGOUT_URL))) {
+        if (StringUtils.isNotBlank(settings.getString(PROPERTY_CAS_LOGOUT_URL))) {
           extensions.add(CasLogoutRequestFilter.class);
           extensions.add(SonarLogoutRequestFilter.class);
         }
 
-        if ("cas1".equals(protocol)) {
+        if (PROTOCOL_CAS1.equals(protocol)) {
           extensions.add(Cas1AuthenticationFilter.class);
           extensions.add(Cas1ValidationFilter.class);
-        } else if ("cas2".equals(protocol)) {
+        } else if (PROTOCOL_CAS2.equals(protocol)) {
           extensions.add(Cas2AuthenticationFilter.class);
           extensions.add(Cas2ValidationFilter.class);
-        } else if ("saml11".equals(protocol)) {
+        } else if (PROTOCOL_SAML11.equals(protocol)) {
           extensions.add(Saml11AuthenticationFilter.class);
           extensions.add(Saml11ValidationFilter.class);
         } else {
@@ -86,7 +87,7 @@ public final class CasPlugin extends SonarPlugin {
     }
 
     private boolean isRealmEnabled() {
-      return CasSecurityRealm.KEY.equalsIgnoreCase(settings.getString("sonar.security.realm"));
+      return CasSecurityRealm.KEY.equalsIgnoreCase(settings.getString(PROPERTY_SECURITY_REALM));
     }
   }
 

@@ -20,42 +20,47 @@
 package org.sonar.plugins.cas;
 
 import org.jasig.cas.client.authentication.AttributePrincipal;
-import org.jasig.cas.client.util.AbstractCasFilter;
-import org.jasig.cas.client.validation.Assertion;
 import org.sonar.api.config.Settings;
-import org.sonar.api.security.ExternalUsersProvider;
-import org.sonar.api.security.UserDetails;
+import org.sonar.api.security.ExternalGroupsProvider;
 import org.sonar.plugins.cas.util.CasPluginConstants;
 import org.sonar.plugins.cas.util.CasUtils;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-public class CasUserProvider extends ExternalUsersProvider implements CasPluginConstants {
+public class CasGroupProvider extends ExternalGroupsProvider implements CasPluginConstants {
 
   private Settings settings;
   private Map<String, AttributePrincipal> principalMap;
 
-  public CasUserProvider(Settings settings, Map<String, AttributePrincipal> principalMap) {
+  public CasGroupProvider(Settings settings, Map<String, AttributePrincipal> principalMap) {
     this.settings = settings;
     this.principalMap = principalMap;
   }
 
   @Override
-  public UserDetails doGetUserDetails(Context context) {
-    Assertion assertion = (Assertion) context.getRequest().getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION);
-    if (assertion == null || assertion.getPrincipal() == null) {
+  public Collection<String> doGetGroups(String username) {
+    AttributePrincipal principal = principalMap.remove(username);
+    if (principal == null || principal.getAttributes() == null) {
       return null;
     }
 
-    UserDetails details = new UserDetails();
-    details.setName(CasUtils.resolveAttributeValue(settings, PROPERTY_SAML11_ATTRIBUTE_NAME, assertion.getPrincipal().getAttributes()));
-    details.setEmail(CasUtils.resolveAttributeValue(settings, PROPERTY_SAML11_ATTRIBUTE_EMAIL, assertion.getPrincipal().getAttributes()));
-    if (details.getName() == null) {
-      details.setName(assertion.getPrincipal().getName());
+    Set<String> groups = new HashSet<String>();
+    String[] groupAttributes = settings.getStringArray(PROPERTY_SAML11_ATTRIBUTE_GROUPS);
+    for (String groupAttribute : groupAttributes) {
+      List<String> values = CasUtils.resolveAttributeValues(groupAttribute, principal.getAttributes());
+      if (values != null) {
+        groups.addAll(values);
+      }
     }
 
-    principalMap.put(assertion.getPrincipal().getName(), assertion.getPrincipal());
-    return details;
+    if (groups.isEmpty()) {
+      return null;
+    }
+    return groups;
   }
 
 }

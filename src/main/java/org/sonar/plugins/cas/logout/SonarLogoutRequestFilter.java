@@ -19,7 +19,12 @@
  */
 package org.sonar.plugins.cas.logout;
 
-import java.io.IOException;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+import org.apache.commons.lang.StringUtils;
+import org.sonar.api.config.Settings;
+import org.sonar.api.web.ServletFilter;
+import org.sonar.plugins.cas.util.CasPluginConstants;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -28,20 +33,17 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
-import org.sonar.api.config.Settings;
-import org.sonar.api.web.ServletFilter;
-
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 /**
  * This filter will handle logout request coming from sonar UI, in order to redirect to CAS logout page.
  *
  * @author Guillaume Lamirand
  */
-public class SonarLogoutRequestFilter extends ServletFilter {
+public class SonarLogoutRequestFilter extends ServletFilter implements CasPluginConstants {
 
-  public static final String PROPERTY_CAS_LOGOUT_URL = "sonar.cas.casServerLogoutUrl";
   private final Settings settings;
   private String logoutUrl;
 
@@ -57,6 +59,13 @@ public class SonarLogoutRequestFilter extends ServletFilter {
   public final void init(final FilterConfig initialConfig) throws ServletException {
     logoutUrl = settings.getString(PROPERTY_CAS_LOGOUT_URL);
     Preconditions.checkState(!Strings.isNullOrEmpty(logoutUrl), String.format("Missing property: %s", PROPERTY_CAS_LOGOUT_URL));
+    if (Boolean.parseBoolean(StringUtils.defaultIfBlank(settings.getString(PROPERTY_LOGOUT_REDIRECT), "true"))) {
+      try {
+        logoutUrl += "?service=" + URLEncoder.encode(settings.getString(PROPERTY_SONAR_SERVER_URL), "UTF-8");
+      } catch (UnsupportedEncodingException e) {
+        throw new RuntimeException(e);
+      }
+    }
   }
 
   public final void doFilter(final ServletRequest servletRequest, final ServletResponse servletResponse, final FilterChain filterChain) throws IOException, ServletException {

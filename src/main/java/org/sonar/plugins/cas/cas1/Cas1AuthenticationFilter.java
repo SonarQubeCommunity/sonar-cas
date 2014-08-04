@@ -19,8 +19,6 @@
  */
 package org.sonar.plugins.cas.cas1;
 
-import java.util.Map;
-
 import com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.lang.StringUtils;
 import org.jasig.cas.client.authentication.AuthenticationFilter;
@@ -28,6 +26,8 @@ import org.sonar.api.config.Settings;
 import org.sonar.plugins.cas.util.AbstractCasFilter;
 
 import javax.servlet.Filter;
+
+import java.util.Map;
 
 /**
  * This filter is used to manage CAS 1 protocol.
@@ -55,8 +55,8 @@ public final class Cas1AuthenticationFilter extends AbstractCasFilter {
 
   @Override
   protected void doCompleteProperties(Settings settings, Map<String, String> properties) {
-    properties.put("casServerLoginUrl", settings.getString("sonar.cas.casServerLoginUrl"));
-    properties.put("gateway", StringUtils.defaultIfBlank(settings.getString("sonar.cas.sendGateway"), "false"));
+    properties.put("casServerLoginUrl", settings.getString(PROPERTY_CAS_LOGIN_URL));
+    properties.put("gateway", StringUtils.defaultIfBlank(settings.getString(PROPERTY_SEND_GATEWAY), "false"));
   }
 
 }

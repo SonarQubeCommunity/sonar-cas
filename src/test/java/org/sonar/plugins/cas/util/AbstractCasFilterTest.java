@@ -30,6 +30,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.util.Map;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -37,7 +38,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class AbstractCasFilterTest {
+public class AbstractCasFilterTest implements CasPluginConstants {
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -69,14 +70,14 @@ public class AbstractCasFilterTest {
     thrown.expectMessage("must not end with slash");
 
     Filter target = mock(Filter.class);
-    Settings settings = new Settings().setProperty("sonar.cas.sonarServerUrl", "http://foo/");
+    Settings settings = new Settings().setProperty(PROPERTY_SONAR_SERVER_URL, "http://foo/");
     AbstractCasFilter filter = new FakeFilter(settings, target);
     filter.init(mock(FilterConfig.class));
   }
 
   @Test
   public void init_cas_service() throws Exception {
-    Settings settings = new Settings().setProperty("sonar.cas.sonarServerUrl", "http://localhost:9000");
+    Settings settings = new Settings().setProperty(PROPERTY_SONAR_SERVER_URL, "http://localhost:9000");
     AbstractCasFilter filter = new FakeFilter(settings, mock(Filter.class));
 
     Map<String, String> properties = filter.loadProperties();

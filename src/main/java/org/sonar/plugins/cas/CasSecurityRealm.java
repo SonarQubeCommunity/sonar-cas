@@ -19,26 +19,49 @@
  */
 package org.sonar.plugins.cas;
 
+import org.jasig.cas.client.authentication.AttributePrincipal;
+import org.sonar.api.config.Settings;
 import org.sonar.api.security.Authenticator;
+import org.sonar.api.security.ExternalGroupsProvider;
 import org.sonar.api.security.ExternalUsersProvider;
 import org.sonar.api.security.SecurityRealm;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CasSecurityRealm extends SecurityRealm {
 
   public static final String KEY = "cas";
 
+  private CasAuthenticator authenticator;
+  private CasUserProvider usersProvider;
+  private CasGroupProvider groupsProvider;
+
+  public CasSecurityRealm(Settings settings) {
+    Map<String, AttributePrincipal> principalMap = new ConcurrentHashMap<String, AttributePrincipal>();
+    this.authenticator = new CasAuthenticator();
+    this.usersProvider = new CasUserProvider(settings, principalMap);
+    this.groupsProvider = new CasGroupProvider(settings, principalMap);
+  }
+
   @Override
   public Authenticator doGetAuthenticator() {
-    return new CasAuthenticator();
+    return authenticator;
   }
 
   @Override
   public ExternalUsersProvider getUsersProvider() {
-    return new CasUserProvider();
+    return usersProvider;
+  }
+
+  @Override
+  public ExternalGroupsProvider getGroupsProvider() {
+    return groupsProvider;
   }
 
   @Override
   public String getName() {
     return KEY;
   }
+
 }

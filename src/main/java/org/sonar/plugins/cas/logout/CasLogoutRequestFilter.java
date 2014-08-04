@@ -19,7 +19,6 @@
  */
 package org.sonar.plugins.cas.logout;
 
-import org.jasig.cas.client.session.SingleSignOutFilter;
 import org.sonar.api.config.Settings;
 import org.sonar.plugins.cas.util.AbstractCasFilter;
 
@@ -33,17 +32,19 @@ import java.util.Map;
 public class CasLogoutRequestFilter extends AbstractCasFilter {
 
   public CasLogoutRequestFilter(final Settings pSettings) {
-    super(pSettings, new SingleSignOutFilter());
+    super(pSettings, new CasSonarSingleSignOutFilter());
   }
 
   @Override
   public UrlPattern doGetPattern() {
-    return UrlPattern.create("/*");
+    return UrlPattern.create("/cas/validate");
   }
 
   @Override
   protected void doCompleteProperties(final Settings settings, final Map<String, String> properties) {
-    // Nothing to complete
+    if (PROTOCOL_SAML11.equals(settings.getString(PROPERTY_PROTOCOL))) {
+      properties.put("artifactParameterName", "SAMLart");
+    }
   }
 
 }
