@@ -76,7 +76,7 @@
     <sonar.version>3.7</sonar.version>
     <sonar.pluginName>CAS</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.cas.CasPlugin</sonar.pluginClass>
-    <cas.version>3.2.1</cas.version>
+    <cas.version>3.6.2</cas.version>
   </properties>
 
   <dependencies>
